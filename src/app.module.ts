@@ -1,11 +1,16 @@
 import { Module } from '@nestjs/common';
 import { TelegrafModule } from 'nestjs-telegraf';
 import { BotModule } from './bot/bot.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      envFilePath: '.env',
+      isGlobal: true,
+    }),
     TelegrafModule.forRoot({
-      token: '7733421157:AAEZL6z00L8RtRfEPoSN0Q-4eVgVYpX97TM',
+      token: String(process.env.BOT_TOKEN),
     }),
     BotModule,
   ],

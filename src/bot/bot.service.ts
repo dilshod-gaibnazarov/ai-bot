@@ -6,10 +6,10 @@ import * as path from 'path';
 import axios from 'axios';
 import * as FormData from 'form-data';
 
-const openai = new OpenAI({
-  apiKey:
-    'sk-1Cp9zzbDNCSBJzDaizNaqWYNV-O5XqaHJzlYuEKSjST3BlbkFJjOmgusOTa4wBdRhAuGB_ZUFf1U_uwCMVZXajXvWOYA',
-});
+const apiKey = String(process.env.CHATGPT_API_KEY);
+const token = String(process.env.BOT_TOKEN);
+
+const openai = new OpenAI({ apiKey });
 
 const imageKeywords = [
   'rasm chizib ber',
@@ -58,7 +58,7 @@ export class BotService {
           {
             responseType: 'arraybuffer',
             headers: {
-              Authorization: `Bearer sk-1Cp9zzbDNCSBJzDaizNaqWYNV-O5XqaHJzlYuEKSjST3BlbkFJjOmgusOTa4wBdRhAuGB_ZUFf1U_uwCMVZXajXvWOYA`,
+              Authorization: `Bearer ${apiKey}`,
               'Content-Type': 'application/json',
             },
           },
@@ -118,7 +118,7 @@ export class BotService {
       const photo = ctx.message.photo;
       const fileId = photo[photo.length - 1].file_id;
       const file = await ctx.telegram.getFile(fileId);
-      const fileUrl = `https://api.telegram.org/file/bot7733421157:AAEZL6z00L8RtRfEPoSN0Q-4eVgVYpX97TM/${file.file_path}`;
+      const fileUrl = `https://api.telegram.org/file/bot${token}/${file.file_path}`;
       const response = await openai.chat.completions.create({
         model: 'gpt-4o',
         messages: [
@@ -163,7 +163,7 @@ export class BotService {
           : ctx.message.audio.file_id;
       const file = await ctx.telegram.getFile(fileId);
       const filePath = file.file_path;
-      const downloadUrl = `https://api.telegram.org/file/bot7733421157:AAEZL6z00L8RtRfEPoSN0Q-4eVgVYpX97TM/${filePath}`;
+      const downloadUrl = `https://api.telegram.org/file/bot${token}/${filePath}`;
       const response = await axios.get(downloadUrl, {
         responseType: 'arraybuffer',
       });
@@ -179,7 +179,7 @@ export class BotService {
         {
           headers: {
             ...formData.getHeaders(),
-            Authorization: `Bearer sk-1Cp9zzbDNCSBJzDaizNaqWYNV-O5XqaHJzlYuEKSjST3BlbkFJjOmgusOTa4wBdRhAuGB_ZUFf1U_uwCMVZXajXvWOYA`,
+            Authorization: `Bearer ${apiKey}`,
           },
         },
       );
