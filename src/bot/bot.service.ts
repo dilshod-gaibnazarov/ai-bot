@@ -5,6 +5,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import axios from 'axios';
 import * as FormData from 'form-data';
+import { config } from 'dotenv';
+config();
 
 const apiKey = String(process.env.CHATGPT_API_KEY);
 const token = String(process.env.BOT_TOKEN);
